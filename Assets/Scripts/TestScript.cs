@@ -7,19 +7,29 @@ public class TestScript : MonoBehaviour
     public GameObject TestObject;
     public BoxCollider A;
     public TestTest Z;
-    public Text Text;
+    [SerializeField] private Text Text;
     public RectTransform RT;
     public Image PenguinImage;
     public Sprite ImageSprite;
     public AudioSource Bgm;
     public AudioClip ShakinSound;
     public GameObject CubeBoxB;
+    private int i = 0;
 
     private void Awake()
     {
         Debug.Log("Awake 呼び出し");
         enabled = false; // スクリプト自体の無効化
         enabled = true; // スクリプト自体の有効化
+
+        Slime slime = new Slime("スライムさん", 100, 200, 300);
+        slime.printDetail();
+        Slime slahyon = new Slime("スラヒョン", 300, 100, 500);
+        slahyon.printDetail();
+        slahyon.SetHp(-10);
+        slahyon.Lucky = 100;
+        Debug.Log($"{slahyon.title} {slahyon.GetHp()} {slahyon.Lucky}");
+
     }
     // Start is called before the first frame update
     void Start()
@@ -30,7 +40,7 @@ public class TestScript : MonoBehaviour
         ComponentOperation();
         TextOperation();
         ImageOperation();
-        //AudioOperation();
+        AudioOperation();
         ButtonOperation();
     }
 
@@ -107,10 +117,14 @@ public class TestScript : MonoBehaviour
      */
     void ObjectOperation()
     {
+        Debug.Log(i);
         GameObject sphereObj = GameObject.Find("Sphere");
         //sphereObj.SetActive(false);
-        GameObject sphereObjCopied = Instantiate(sphereObj, new Vector3(1.5f, 0.0f, 0.0f), Quaternion.identity);
-        sphereObjCopied.name = "Sphere2";
+        GameObject sphereObjCopied = Instantiate(
+            sphereObj, 
+            new Vector3(getRandomPosition(), getRandomPosition(), getRandomPosition()),
+            Quaternion.identity);
+        sphereObjCopied.name = $"Sphere{i++}";
     }
 
     /*
@@ -130,13 +144,18 @@ public class TestScript : MonoBehaviour
 
         Destroy(rb, 2.0f); // コンポーネント削除
     }
-    
+
+    private float getRandomPosition()
+    {
+        return Random.Range(0.0f, 10.0f);
+    }
     /*
     * Text
-    */  
+    */
     void TextOperation()
     {
-        Text.text = "AB\nCD\nEF";
+        int val = Random.Range(0, 10);
+        Text.text = $"{val}AB\nCD\nEF";
         RT.localPosition = new Vector3(0.0f, 0.0f, 0.0f); // 位置を変更
         RT.sizeDelta = new Vector2(200.0f, 50.0f); // 幅、高さ
     }
@@ -154,21 +173,27 @@ public class TestScript : MonoBehaviour
 
     void AudioOperation()
     {
+        Invoke("PlayBgm", 3.0f);
+    }
+
+    private void PlayBgm()
+    {
         Bgm.Play();
     }
 
-    void PlayShakinSound()
+    void ClickButtonAction()
     {
         //Debug.Log("button clicked");
         //Bgm.Play();
         Bgm.PlayOneShot(ShakinSound);
+        ObjectOperation();
     }
 
     public void ButtonOperation()
     {
         GameObject Button = GameObject.Find("SoundPlayButton");
         Button b = Button.GetComponent<Button>();
-        b.onClick.AddListener(PlayShakinSound);
+        b.onClick.AddListener(ClickButtonAction);
         b.onClick.Invoke();
     }
 }
