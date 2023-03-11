@@ -52,7 +52,38 @@ public class TestScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (Input.GetKey(KeyCode.RightArrow))
+        {
+            Debug.Log("右矢印キーが押されています。");
+        }
+        if (Input.GetKey(KeyCode.LeftArrow))
+        {
+            Debug.Log("左矢印キーが押されています。");
+        }
+        if (Input.GetKey(KeyCode.UpArrow))
+        {
+            Debug.Log("上矢印キーが押されています。");
+        }
+        if (Input.GetKey(KeyCode.DownArrow))
+        {
+            Debug.Log("下矢印キーが押されています。");
+        }
+        if (Input.GetKey(KeyCode.Space))
+        {
+            Debug.Log("Spaceキーが押されています。");
+        }
+        if (Input.GetMouseButtonDown(0))
+        {
+            Debug.Log("左クリック。");
+        }
+        if (Input.GetMouseButtonDown(1))
+        {
+            Debug.Log("右クリック。");
+        }
+        if (Input.GetMouseButtonDown(2))
+        {
+            Debug.Log("中クリック。");
+        }
     }
 
     void BasicOperation()
